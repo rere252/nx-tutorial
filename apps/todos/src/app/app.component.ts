@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Todo } from './models/todo.model';
 import { TodoService } from './service/todo.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'rjd-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private todoService: TodoService) {}
 
   ngOnInit() {
-    this.fetchTodos();
+    this.fetchTodos().subscribe((todos) => (this.todos = todos));
   }
 
   public addTodo() {
@@ -22,10 +23,11 @@ export class AppComponent implements OnInit {
       .addTodo({
         title: `New todo ${Math.floor(Math.random() * 1000)}`,
       })
-      .subscribe(() => this.fetchTodos());
+      .pipe(switchMap(() => this.fetchTodos()))
+      .subscribe((todos) => (this.todos = todos));
   }
 
   private fetchTodos() {
-    this.todoService.getTodos().subscribe((todos) => (this.todos = todos));
+    return this.todoService.getTodos();
   }
 }
