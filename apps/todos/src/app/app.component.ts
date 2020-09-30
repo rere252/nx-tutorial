@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Todo } from './models/todo.model';
 import { TodoService } from './service/todo.service';
 import { switchMap } from 'rxjs/operators';
@@ -10,12 +15,17 @@ import { switchMap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  public todos: Todo[] = [{ title: 'Todo 1' }, { title: 'Todo 2' }];
+  public todos: Todo[];
 
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.todos = [];
+  }
 
   ngOnInit() {
-    this.fetchTodos().subscribe((todos) => (this.todos = todos));
+    this.fetchTodos().subscribe((todos) => this.displayTodos(todos));
   }
 
   public addTodo() {
@@ -24,10 +34,15 @@ export class AppComponent implements OnInit {
         title: `New todo ${Math.floor(Math.random() * 1000)}`,
       })
       .pipe(switchMap(() => this.fetchTodos()))
-      .subscribe((todos) => (this.todos = todos));
+      .subscribe((todos) => this.displayTodos(todos));
   }
 
   private fetchTodos() {
     return this.todoService.getTodos();
+  }
+
+  private displayTodos(todos: Todo[]) {
+    this.todos = todos;
+    this.cdr.detectChanges();
   }
 }
