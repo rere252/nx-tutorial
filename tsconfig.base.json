@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@rjd/data": ["libs/data/src/index.ts"]
+      "@rjd/data": ["libs/data/src/index.ts"],
+      "@rjd/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
