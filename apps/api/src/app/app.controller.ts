@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { Todo } from './models/todo.model';
+import { Todo } from '@rjd/data';
 
 @Controller()
 export class AppController {

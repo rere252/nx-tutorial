@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { Todo } from './models/todo.model';
+import { Todo } from '@rjd/data';
 import { TodoService } from './service/todo.service';
 import { switchMap } from 'rxjs/operators';
 
